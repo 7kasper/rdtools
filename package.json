@@ -1,0 +1,28 @@
+{
+  "name": "rdtools",
+  "version": "1.0.0",
+  "description": "Some simple javascript tools for Rijksdriehoek conversions.",
+  "keywords": [
+    "rijksdriehoek",
+    "tools",
+    "wgs84",
+    "coordinates",
+    "gps",
+    "rd"
+  ],
+  "homepage": "https://github.com/7kasper/rdtools#readme",
+  "bugs": {
+    "url": "https://github.com/7kasper/rdtools/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/7kasper/rdtools.git"
+  },
+  "license": "GPL-3.0-or-later",
+  "author": "7kasper",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
