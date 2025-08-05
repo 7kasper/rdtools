@@ -1,6 +1,6 @@
 {
   "name": "rijksdriehoektools",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Some simple javascript tools for Rijksdriehoek conversions.",
   "keywords": [
     "rijksdriehoek",
@@ -24,5 +24,6 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-  }
+  },
+  "types": "index.d.ts"
 }

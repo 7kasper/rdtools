@@ -3,14 +3,14 @@
  * @see https://thomasv.nl/2014/03/rd-naar-gps/
  * Copied from @see https://gist.github.com/erikvullings/a2c58cecc3f0a27b043deba90089af57
  */
-  const x0 = 155000;
-  const y0 = 463000;
-  const f0 = 52.15517440; // f => phi
-  const l0 = 5.38720621;  // l => lambda
+const x0 = 155000;
+const y0 = 463000;
+const f0 = 52.15517440; // f => phi
+const l0 = 5.38720621;  // l => lambda
 
-  const Kp = [0, 2, 0, 2, 0, 2, 1, 4, 2, 4, 1];
-  const Kq = [1, 0, 2, 1, 3, 2, 0, 0, 3, 1, 1];
-  const Kpq = [
+const Kp = [0, 2, 0, 2, 0, 2, 1, 4, 2, 4, 1];
+const Kq = [1, 0, 2, 1, 3, 2, 0, 0, 3, 1, 1];
+const Kpq = [
     3235.65389,
     -32.58297,
     -0.2475,
@@ -22,11 +22,11 @@
     -0.00039,
     0.00033,
     -0.00012,
-  ];
+];
 
-  const Lp = [1, 1, 1, 3, 1, 3, 0, 3, 1, 0, 2, 5];
-  const Lq = [0, 1, 2, 0, 3, 1, 1, 2, 4, 2, 0, 0];
-  const Lpq = [
+const Lp = [1, 1, 1, 3, 1, 3, 0, 3, 1, 0, 2, 5];
+const Lq = [0, 1, 2, 0, 3, 1, 1, 2, 4, 2, 0, 0];
+const Lpq = [
     5260.52916,
     105.94684,
     2.45656,
@@ -39,69 +39,67 @@
     0.00022,
     -0.00022,
     0.00026,
-  ];
+];
 
-  const Rp = [0, 1, 2, 0, 1, 3, 1, 0, 2];
-  const Rq = [1, 1, 1, 3, 0, 1, 3, 2, 3];
-  const Rpq = [190094.945, -11832.228, -114.221, -32.391, -0.705, -2.34, -0.608, -0.008, 0.148];
+const Rp = [0, 1, 2, 0, 1, 3, 1, 0, 2];
+const Rq = [1, 1, 1, 3, 0, 1, 3, 2, 3];
+const Rpq = [190094.945, -11832.228, -114.221, -32.391, -0.705, -2.34, -0.608, -0.008, 0.148];
 
-  const Sp = [1, 0, 2, 1, 3, 0, 2, 1, 0, 1];
-  const Sq = [0, 2, 0, 2, 0, 1, 2, 1, 4, 4];
-  const Spq = [309056.544, 3638.893, 73.077, -157.984, 59.788, 0.433, -6.439, -0.032, 0.092, -0.054];
+const Sp = [1, 0, 2, 1, 3, 0, 2, 1, 0, 1];
+const Sq = [0, 2, 0, 2, 0, 1, 2, 1, 4, 4];
+const Spq = [309056.544, 3638.893, 73.077, -157.984, 59.788, 0.433, -6.439, -0.032, 0.092, -0.054];
 
 
-    /**
-     * Convert RD x, y to WGS84 lat, lon.
-     */
-    function _rdToWgs84 (x, y = 0) {
-      if (x instanceof Array) {
-        y = x[1];
-        x = x[0];
-      } else if (typeof x !== 'number') {
-        y = x.y;
-        x = x.x;
-      }
-      const dX = 1e-5 * (x - x0);
-      const dY = 1e-5 * (y - y0);
-
-      let lat = 0;
-      let lon = 0;
-
-      for (let i = 0; i < 10; i++) {
-        lat = lat + Kpq[i] * dX ** Kp[i] * dY ** Kq[i];
-      }
-      lat = f0 + lat / 3600;
-
-      for (let i = 0; i < 11; i++) {
-        lon = lon + Lpq[i] * dX ** Lp[i] * dY ** Lq[i];
-      }
-      lon = l0 + lon / 3600;
-
-      return { lat, lon };
+/**
+ * Convert RD x, y to WGS84 lat, lon.
+ */
+export function rdToWgs84(x, y = 0) {
+    if (x instanceof Array) {
+    y = x[1];
+    x = x[0];
+    } else if (typeof x !== 'number') {
+    y = x.y;
+    x = x.x;
     }
+    const dX = 1e-5 * (x - x0);
+    const dY = 1e-5 * (y - y0);
 
-    /**
-     * Convert WGS84 lat, lon (or [lat, lon]) to RD x, y.
-     */
-    function _wgs84ToRd(lat, lon = 0) {
-      if (lat instanceof Array) {
+    let lat = 0;
+    let lon = 0;
+
+    for (let i = 0; i < 10; i++) {
+    lat = lat + Kpq[i] * dX ** Kp[i] * dY ** Kq[i];
+    }
+    lat = f0 + lat / 3600;
+
+    for (let i = 0; i < 11; i++) {
+    lon = lon + Lpq[i] * dX ** Lp[i] * dY ** Lq[i];
+    }
+    lon = l0 + lon / 3600;
+
+    return { lat, lon };
+}
+
+/**
+ * Convert WGS84 lat, lon (or [lat, lon]) to RD x, y.
+ */
+export function wgs84ToRd(lat, lon = 0) {
+    if (lat instanceof Array) {
         lon = lat[1];
         lat = lat[0];
-      }
-      const df = 0.36 * (lat - f0);
-      const dl = 0.36 * (lon - l0);
-      let x = x0;
-      let y = y0;
+    }
+    const df = 0.36 * (lat - f0);
+    const dl = 0.36 * (lon - l0);
+    let x = x0;
+    let y = y0;
 
-      for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 8; i++) {
         x = x + Rpq[i] * df ** Rp[i] * dl ** Rq[i];
-      }
-
-      for (let i = 0; i < 9; i++) {
-        y = y + Spq[i] * df ** Sp[i] * dl ** Sq[i];
-      }
-      return { x, y };
     }
 
-    export const rdToWgs84 = _rdToWgs84;
-    export const wgs84ToRd = _wgs84ToRd;
+    for (let i = 0; i < 9; i++) {
+        y = y + Spq[i] * df ** Sp[i] * dl ** Sq[i];
+    }
+
+    return { x, y };
+}
